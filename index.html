@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran Santri Baru - Malika Islamic Boarding School</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .form-section { display: none; }
+        .receipt-section { display: none; }
+        .payment-section { display: none; }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #receipt-printable, #receipt-printable * {
+                visibility: visible;
+            }
+            #receipt-printable {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center">
+                <img src="https://iili.io/FsLlXA7.png" alt="Logo Malika Islamic Boarding School" class="h-12 mr-4">
+                <div>
+                    <h1 class="text-xl font-bold text-blue-800">Malika Islamic Boarding School</h1>
+                    <p class="text-sm text-gray-500">Penerimaan Santri Baru 2026/2027</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8">
+
+        <!-- Step 2: Payment Section -->
+        <div id="payment-section" class="payment-section bg-white p-8 rounded-lg shadow-lg max-w-2xl mx-auto">
+            <h2 class="text-2xl font-bold text-center text-blue-800 mb-2">Langkah 1: Pembayaran Formulir</h2>
+            <p class="text-center text-gray-600 mb-6">Silakan lakukan pembayaran biaya pendaftaran sebesar <strong>Rp 500.000,-</strong> melalui scan QRIS di bawah ini.</p>
+            <div class="flex justify-center mb-6">
+                <img src="https://lh3.googleusercontent.com/d/1AgMptUH__XodAvLP126aBTaOfGUpFNNy" alt="QRIS Danamon" class="w-64 h-64 border-4 border-gray-200 rounded-lg" onerror="this.onerror=null;this.src='https://placehold.co/256x256/CCCCCC/FFFFFF?text=QRIS+Tidak+Tersedia';">
+            </div>
+            <p class="text-center text-sm text-gray-500 mb-6">Scan dengan aplikasi e-wallet atau mobile banking Anda. <br> Pastikan nama merchant adalah <strong>Malika Islamic School</strong>.</p>
+            <div class="mt-6 mb-6">
+                <label for="payment-proof" class="block text-sm font-medium text-gray-700 text-center">Unggah Bukti Pembayaran <span class="text-red-500">*</span></label>
+                <input type="file" id="payment-proof" name="payment_proof" accept="image/png, image/jpeg, image/jpg" required class="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 mx-auto max-w-xs">
+                <p id="file-error" class="text-red-500 text-sm text-center mt-1 hidden">Silakan unggah bukti pembayaran.</p>
+            </div>
+            <div class="text-center">
+                <button id="payment-confirm-btn" class="bg-blue-700 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-800 transition duration-300 shadow-md">
+                    Unggah Bukti Pembayaran
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 3: Biodata Form Section -->
+        <div id="form-section" class="form-section bg-white p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
+            <h2 class="text-2xl font-bold text-center text-blue-800 mb-6">Langkah 2: Formulir Pendaftaran</h2>
+            <form id="registration-form">
+                <!-- Data Diri Santri -->
+                <div class="border-b pb-6 mb-6">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">A. Data Calon Santri</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="jenjang" class="block text-sm font-medium text-gray-700">Pilihan Jenjang Pendidikan <span class="text-red-500">*</span></label>
+                            <select id="jenjang" name="jenjang" required class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                <option value="" disabled selected>-- Pilih Jenjang --</option>
+                                <option value="SMP">SMP</option>
+                                <option value="SMA">SMA</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="nama_lengkap" class="block text-sm font-medium text-gray-700">Nama Lengkap <span class="text-red-500">*</span></label>
+                            <input type="text" id="nama_lengkap" name="nama_lengkap" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                         <div>
+                            <label for="jenis_kelamin" class="block text-sm font-medium text-gray-700">Jenis Kelamin <span class="text-red-500">*</span></label>
+                            <select id="jenis_kelamin" name="jenis_kelamin" required class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                <option value="" disabled selected>-- Pilih Jenis Kelamin --</option>
+                                <option value="Laki-laki">Laki-laki</option>
+                                <option value="Perempuan">Perempuan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="nisn" class="block text-sm font-medium text-gray-700">NISN</label>
+                            <input type="number" id="nisn" name="nisn" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                         <div>
+                            <label for="nik" class="block text-sm font-medium text-gray-700">NIK <span class="text-red-500">*</span></label>
+                            <input type="number" id="nik" name="nik" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="tempat_lahir" class="block text-sm font-medium text-gray-700">Tempat Lahir <span class="text-red-500">*</span></label>
+                                <input type="text" id="tempat_lahir" name="tempat_lahir" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="tanggal_lahir" class="block text-sm font-medium text-gray-700">Tanggal Lahir <span class="text-red-500">*</span></label>
+                                <input type="date" id="tanggal_lahir" name="tanggal_lahir" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="sekolah_asal" class="block text-sm font-medium text-gray-700">Nama Sekolah Asal <span class="text-red-500">*</span></label>
+                            <input type="text" id="sekolah_asal" name="sekolah_asal" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="tinggi_badan" class="block text-sm font-medium text-gray-700">Tinggi Badan (cm)</label>
+                                <input type="number" id="tinggi_badan" name="tinggi_badan" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="berat_badan" class="block text-sm font-medium text-gray-700">Berat Badan (kg)</label>
+                                <input type="number" id="berat_badan" name="berat_badan" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <label for="alamat" class="block text-sm font-medium text-gray-700">Alamat Tempat Tinggal <span class="text-red-500">*</span></label>
+                        <textarea id="alamat" name="alamat" rows="3" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+                        <input type="text" name="kelurahan" placeholder="Kelurahan / Desa" required class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <input type="text" name="kecamatan" placeholder="Kecamatan" required class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <input type="text" name="kabupaten" placeholder="Kabupaten/Kota" required class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <input type="text" name="provinsi" placeholder="Provinsi" required class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                </div>
+
+                <!-- Data Orang Tua/Wali -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Data Ayah -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4">B. Data Ayah</h3>
+                        <div class="space-y-4">
+                            <input type="text" name="ayah_nama" placeholder="Nama Ayah" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            <input type="email" name="ayah_email" placeholder="Email Ayah" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            <input type="tel" name="ayah_wa" placeholder="Nomor WhatsApp Ayah" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            <input type="text" name="ayah_pekerjaan" placeholder="Pekerjaan" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            <select name="ayah_pendidikan" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md"><option>Pendidikan</option><option>SD</option><option>SMP</option><option>SMA</option><option>D1-D3</option><option>S1</option><option>S2</option><option>S3</option></select>
+                            <select name="ayah_penghasilan" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md"><option>Penghasilan Bulanan</option><option>&lt; 1 Juta</option><option>1 - 3 Juta</option><option>3 - 5 Juta</option><option>5 - 10 Juta</option><option>&gt; 10 Juta</option></select>
+                        </div>
+                    </div>
+                    <!-- Data Ibu -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4">C. Data Ibu</h3>
+                        <div class="space-y-4">
+                            <input type="text" name="ibu_nama" placeholder="Nama Ibu" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            <input type="text" name="ibu_pekerjaan" placeholder="Pekerjaan" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            <select name="ibu_pendidikan" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md"><option>Pendidikan</option><option>SD</option><option>SMP</option><option>SMA</option><option>D1-D3</option><option>S1</option><option>S2</option><option>S3</option></select>
+                            <select name="ibu_penghasilan" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md"><option>Penghasilan Bulanan</option><option>&lt; 1 Juta</option><option>1 - 3 Juta</option><option>3 - 5 Juta</option><option>5 - 10 Juta</option><option>&gt; 10 Juta</option></select>
+                        </div>
+                    </div>
+                    <!-- Data Wali -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4">D. Data Wali (Opsional)</h3>
+                        <div class="space-y-4">
+                            <input type="text" name="wali_nama" placeholder="Nama Wali" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            <input type="email" name="wali_email" placeholder="Email Wali" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            <input type="text" name="wali_pekerjaan" placeholder="Pekerjaan" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            <select name="wali_pendidikan" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md"><option>Pendidikan</option><option>SD</option><option>SMP</option><option>SMA</option><option>D1-D3</option><option>S1</option><option>S2</option><option>S3</option></select>
+                            <select name="wali_penghasilan" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md"><option>Penghasilan Bulanan</option><option>&lt; 1 Juta</option><option>1 - 3 Juta</option><option>3 - 5 Juta</option><option>5 - 10 Juta</option><option>&gt; 10 Juta</option></select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="mt-8 text-center">
+                    <button type="submit" class="bg-blue-700 text-white font-bold py-3 px-10 rounded-lg hover:bg-blue-800 transition duration-300 shadow-md">
+                        Kirim Pendaftaran
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Step 4: Receipt Section -->
+        <div id="receipt-section" class="receipt-section">
+            <div id="receipt-printable" class="bg-white p-8 rounded-lg shadow-lg max-w-3xl mx-auto">
+                <div class="text-center border-b-2 border-dashed pb-4 mb-4">
+                    <img src="https://iili.io/FsLlXA7.png" alt="Logo" class="h-20 mx-auto mb-2">
+                    <h2 class="text-2xl font-bold text-blue-800">Bukti Pendaftaran Santri Baru</h2>
+                    <p class="text-gray-600">Malika Islamic Boarding School</p>
+                </div>
+                <div class="text-center bg-blue-50 p-4 rounded-lg mb-6">
+                    <p class="text-gray-700">Nomor Registrasi Anda:</p>
+                    <p id="receipt-reg-num" class="text-3xl font-bold text-blue-900 tracking-wider"></p>
+                    <p class="text-sm mt-2">Harap simpan nomor ini untuk proses selanjutnya.</p>
+                </div>
+
+                <h3 class="font-semibold text-gray-800 mb-2 text-lg">Detail Pendaftar:</h3>
+                <div id="receipt-data" class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-gray-700">
+                    <!-- Data will be populated by JavaScript -->
+                </div>
+                 <div class="mt-6 border-t pt-4">
+                    <p class="font-semibold">Status Pembayaran Formulir:</p>
+                    <p class="text-green-600 font-bold text-lg">Dalam Proses Verifikasi</p>
+                </div>
+                <div class="mt-6 text-sm text-gray-500">
+                    <p><strong>Catatan:</strong> Ini adalah bukti rangkaian pendaftaran Anda. Setelah verifikasi pembayaran berhasil, informasi mengenai jadwal tes dan tahapan selanjutnya akan dikirimkan melalui nomor WhatsApp yang terdaftar.</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    
+    <!-- Step 1: Information Popup/Modal -->
+    <div id="info-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span id="close-modal-btn" class="modal-close-btn">&times;</span>
+            <h2 class="text-xl font-bold text-center text-blue-800 mb-4">Tahapan Pendaftaran Santri Baru</h2>
+            <img src="https://lh3.googleusercontent.com/d/1hJYxudIcf6yJ9B_L8Y2k-atuWRFv7s1G" alt="Tahapan Pendaftaran" class="w-full rounded-md" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/FFFFFF?text=Alur+Pendaftaran+Tidak+Tersedia';">
+            <div class="text-center mt-4">
+                 <button id="close-modal-btn2" class="bg-blue-700 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-800 transition duration-300">
+                    Mengerti, Lanjutkan Pendaftaran
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="text-center py-6 mt-12 text-sm text-gray-500">
+        <p>&copy; 2025 Malika Islamic Boarding School. All rights reserved.</p>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const infoModal = document.getElementById('info-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const closeModalBtn2 = document.getElementById('close-modal-btn2');
+    
+    const paymentSection = document.getElementById('payment-section');
+    const paymentConfirmBtn = document.getElementById('payment-confirm-btn');
+    const paymentProofInput = document.getElementById('payment-proof');
+    const fileError = document.getElementById('file-error');
+
+    const formSection = document.getElementById('form-section');
+    const registrationForm = document.getElementById('registration-form');
+
+    const receiptSection = document.getElementById('receipt-section');
+    const receiptRegNum = document.getElementById('receipt-reg-num');
+    const receiptData = document.getElementById('receipt-data');
+
+    // Function to close modal and show payment
+    const proceedToPayment = () => {
+        infoModal.style.display = 'none';
+        paymentSection.style.display = 'block';
+    };
+
+    // Event listeners for closing modal
+    closeModalBtn.addEventListener('click', proceedToPayment);
+    closeModalBtn2.addEventListener('click', proceedToPayment);
+
+    // Event listener for payment confirmation
+    paymentConfirmBtn.addEventListener('click', () => {
+        if (paymentProofInput.files.length === 0) {
+            fileError.classList.remove('hidden');
+            return;
+        }
+        fileError.classList.add('hidden');
+        paymentSection.style.display = 'none';
+        formSection.style.display = 'block';
+        window.scrollTo(0, 0);
+    });
+
+    paymentProofInput.addEventListener('change', () => {
+        if (paymentProofInput.files.length > 0) {
+            fileError.classList.add('hidden');
+        }
+    });
+
+    // Event listener for form submission
+    registrationForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // 1. Generate Registration Number
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+        const regNum = `PSB-MALIKA-${year}${month}${day}-${randomSuffix}`;
+        
+        receiptRegNum.textContent = regNum;
+
+        // 2. Get form data and populate receipt
+        const formData = new FormData(registrationForm);
+        const data = Object.fromEntries(formData.entries());
+        const proofFile = paymentProofInput.files[0];
+
+        const createReceiptItem = (label, value) => {
+            if (value && value.trim() !== '' && value.trim() !== 'Pendidikan' && value.trim() !== 'Penghasilan Bulanan' && value.trim() !== '-- Pilih Jenjang --' && value.trim() !== '-- Pilih Jenis Kelamin --') {
+                const div = document.createElement('div');
+                div.innerHTML = `<strong class="font-medium text-gray-600">${label}:</strong><br>${value}`;
+                receiptData.appendChild(div);
+            }
+        };
+
+        receiptData.innerHTML = ''; // Clear previous data
+        
+        createReceiptItem('Jenjang Pendidikan', data.jenjang);
+        createReceiptItem('Nama Lengkap', data.nama_lengkap);
+        createReceiptItem('Jenis Kelamin', data.jenis_kelamin);
+        createReceiptItem('NISN', data.nisn);
+        createReceiptItem('NIK', data.nik);
+        createReceiptItem('Tempat, Tanggal Lahir', `${data.tempat_lahir}, ${new Date(data.tanggal_lahir).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}`);
+        createReceiptItem('Sekolah Asal', data.sekolah_asal);
+        createReceiptItem('Tinggi & Berat Badan', `${data.tinggi_badan || '-'} cm / ${data.berat_badan || '-'} kg`);
+        createReceiptItem('Alamat', `${data.alamat}, ${data.kelurahan}, ${data.kecamatan}, ${data.kabupaten}, ${data.provinsi}`);
+        createReceiptItem('Nama Ayah', data.ayah_nama);
+        createReceiptItem('Email Ayah', data.ayah_email);
+        createReceiptItem('Nomor WhatsApp Ayah', data.ayah_wa);
+        createReceiptItem('Nama Ibu', data.ibu_nama);
+        createReceiptItem('Nama Wali', data.wali_nama);
+        createReceiptItem('Email Wali', data.wali_email);
+        if (proofFile) {
+            createReceiptItem('Bukti Pembayaran', proofFile.name);
+        }
+
+
+        // 3. Hide form and show receipt
+        formSection.style.display = 'none';
+        receiptSection.style.display = 'block';
+        window.scrollTo(0, 0);
+    });
+
+    // Initially, only the modal is visible. The script handles the rest.
+});
+</script>
+
+</body>
+</html>
+
