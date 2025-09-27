@@ -253,7 +253,7 @@
     <div id="info-modal" class="modal-overlay">
         <div class="modal-content">
             <span id="close-modal-btn" class="modal-close-btn">&times;</span>
-            <h2 class="text-xl font-bold text-center text-blue-800 mb-4">Tahapan Pendaftaran Santri Baru</h2>
+            <h2 class="text-xl font-bold text-center text-blue-800 mb-4">Alur Pendaftaran Santri Baru</h2>
             <img src="https://lh3.googleusercontent.com/d/1hJYxudIcf6yJ9B_L8Y2k-atuWRFv7s1G" alt="Tahapan Pendaftaran" class="w-full rounded-md" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/FFFFFF?text=Alur+Pendaftaran+Tidak+Tersedia';">
             <div class="text-center mt-4">
                  <button id="close-modal-btn2" class="bg-blue-700 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-800 transition duration-300">
@@ -323,7 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const month = String(now.getMonth() + 1).padStart(2, '0');
         const day = String(now.getDate()).padStart(2, '0');
         const randomSuffix = Math.floor(1000 + Math.random() * 9000);
-        const regNum = `PSB-MALIKA-${year}${month}${day}-${randomSuffix}`;
+        const regNum = `PSB-MBS-${year}${month}${day}-${randomSuffix}`;
         
         receiptRegNum.textContent = regNum;
 
