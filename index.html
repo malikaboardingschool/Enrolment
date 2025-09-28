@@ -83,11 +83,25 @@
         <!-- Step 2: Payment Section -->
         <div id="payment-section" class="payment-section bg-white p-8 rounded-lg shadow-lg max-w-2xl mx-auto">
             <h2 class="text-2xl font-bold text-center text-blue-800 mb-2">Langkah 1: Pembayaran Formulir</h2>
-            <p class="text-center text-gray-600 mb-6">Silakan lakukan pembayaran biaya pendaftaran sebesar <strong>Rp 500.000,-</strong> melalui scan QRIS di bawah ini.</p>
-            <div class="flex justify-center mb-6">
-                <img src="https://lh3.googleusercontent.com/d/1AgMptUH__XodAvLP126aBTaOfGUpFNNy" alt="QRIS Danamon" class="w-64 h-64 border-4 border-gray-200 rounded-lg" onerror="this.onerror=null;this.src='https://placehold.co/256x256/CCCCCC/FFFFFF?text=QRIS+Tidak+Tersedia';">
+            <p class="text-center text-gray-600 mb-6">Silakan lakukan pembayaran biaya pendaftaran sebesar <strong>Rp 500.000,-</strong> melalui transfer ke rekening berikut:</p>
+            
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6 text-center">
+                <p class="text-lg font-semibold text-blue-900">Bank Danamon</p>
+                <div class="flex items-center justify-center my-2 group">
+                    <p id="account-number" class="text-2xl font-bold text-blue-900 mr-3 tracking-wider">8800323233</p>
+                    <button id="copy-btn" class="bg-blue-200 text-blue-800 px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-blue-300 transition-all duration-200 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard mr-2" viewBox="0 0 16 16">
+                          <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                          <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        <span id="copy-text">Salin</span>
+                    </button>
+                </div>
+                <p class="text-md text-gray-700">a.n. <strong>Malika Islamic School</strong></p>
             </div>
-            <p class="text-center text-sm text-gray-500 mb-6">Scan dengan aplikasi e-wallet atau mobile banking Anda. <br> Pastikan nama merchant adalah <strong>Malika Islamic School</strong>.</p>
+
+            <p class="text-center text-sm text-gray-500 mb-6">Mohon pastikan nama dan nomor rekening tujuan sudah benar sebelum melakukan transfer.</p>
+
             <div class="mt-6 mb-6">
                 <label for="payment-proof" class="block text-sm font-medium text-gray-700 text-center">Unggah Bukti Pembayaran <span class="text-red-500">*</span></label>
                 <input type="file" id="payment-proof" name="payment_proof" accept="image/png, image/jpeg, image/jpg" required class="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 mx-auto max-w-xs">
@@ -107,6 +121,13 @@
                 <!-- Data Diri Santri -->
                 <div class="border-b pb-6 mb-6">
                     <h3 class="text-lg font-semibold text-gray-700 mb-4">A. Data Calon Santri</h3>
+                    
+                    <div class="mb-6 bg-blue-50 border-l-4 border-blue-300 p-4 rounded-r-lg">
+                        <label for="kontak_utama_wa" class="block text-sm font-medium text-gray-800">Nomor WhatsApp Utama (Untuk Informasi PSB) <span class="text-red-500">*</span></label>
+                        <input type="tel" id="kontak_utama_wa" name="kontak_utama_wa" placeholder="Contoh: 081234567890" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <p class="mt-2 text-xs text-gray-600">Semua informasi pendaftaran (jadwal tes, hasil seleksi, dll.) akan dikirim ke nomor ini.</p>
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label for="jenjang" class="block text-sm font-medium text-gray-700">Pilihan Jenjang Pendidikan <span class="text-red-500">*</span></label>
@@ -192,6 +213,7 @@
                         <h3 class="text-lg font-semibold text-gray-700 mb-4">C. Data Ibu</h3>
                         <div class="space-y-4">
                             <input type="text" name="ibu_nama" placeholder="Nama Ibu" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            <input type="tel" name="ibu_wa" placeholder="Nomor WhatsApp Ibu" class="w-full px-3 py-2 border border-gray-300 rounded-md">
                             <input type="text" name="ibu_pekerjaan" placeholder="Pekerjaan" class="w-full px-3 py-2 border border-gray-300 rounded-md">
                             <select name="ibu_pendidikan" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md"><option>Pendidikan</option><option>SD</option><option>SMP</option><option>SMA</option><option>D1-D3</option><option>S1</option><option>S2</option><option>S3</option></select>
                             <select name="ibu_penghasilan" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md"><option>Penghasilan Bulanan</option><option>&lt; 1 Juta</option><option>1 - 3 Juta</option><option>3 - 5 Juta</option><option>5 - 10 Juta</option><option>&gt; 10 Juta</option></select>
@@ -199,7 +221,7 @@
                     </div>
                     <!-- Data Wali -->
                     <div>
-                        <h3 class="text-lg font-semibold text-gray-700 mb-4">D. Data Wali (Opsional)</h3>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4">D. Data Wali (Jika Ada)</h3>
                         <div class="space-y-4">
                             <input type="text" name="wali_nama" placeholder="Nama Wali" class="w-full px-3 py-2 border border-gray-300 rounded-md">
                             <input type="email" name="wali_email" placeholder="Email Wali" class="w-full px-3 py-2 border border-gray-300 rounded-md">
@@ -224,7 +246,7 @@
             <div id="receipt-printable" class="bg-white p-8 rounded-lg shadow-lg max-w-3xl mx-auto">
                 <div class="text-center border-b-2 border-dashed pb-4 mb-4">
                     <img src="https://iili.io/FsLlXA7.png" alt="Logo" class="h-20 mx-auto mb-2">
-                    <h2 class="text-2xl font-bold text-blue-800">Bukti Pendaftaran Santri Baru</h2>
+                    <h2 class="text-2xl font-bold text-blue-800">Rangkaian Pendaftaran Santri Baru</h2>
                     <p class="text-gray-600">Malika Islamic Boarding School</p>
                 </div>
                 <div class="text-center bg-blue-50 p-4 rounded-lg mb-6">
@@ -242,7 +264,7 @@
                     <p class="text-green-600 font-bold text-lg">Dalam Proses Verifikasi</p>
                 </div>
                 <div class="mt-6 text-sm text-gray-500">
-                    <p><strong>Catatan:</strong> Ini adalah bukti rangkaian pendaftaran Anda. Setelah verifikasi pembayaran berhasil, informasi mengenai jadwal tes dan tahapan selanjutnya akan dikirimkan melalui nomor WhatsApp yang terdaftar.</p>
+                    <p><strong>Catatan:</strong> Ini adalah bukti rangkaian pendaftaran Anda. Setelah verifikasi pembayaran berhasil, informasi mengenai jadwal tes dan tahapan selanjutnya akan dikirimkan melalui <strong>Nomor WhatsApp Utama</strong> yang terdaftar.</p>
                 </div>
             </div>
         </div>
@@ -285,6 +307,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const receiptRegNum = document.getElementById('receipt-reg-num');
     const receiptData = document.getElementById('receipt-data');
 
+    const copyBtn = document.getElementById('copy-btn');
+    const accountNumber = document.getElementById('account-number');
+    const copyText = document.getElementById('copy-text');
+
     // Function to close modal and show payment
     const proceedToPayment = () => {
         infoModal.style.display = 'none';
@@ -294,6 +320,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event listeners for closing modal
     closeModalBtn.addEventListener('click', proceedToPayment);
     closeModalBtn2.addEventListener('click', proceedToPayment);
+
+    // Event listener for copy button
+    copyBtn.addEventListener('click', () => {
+        const tempInput = document.createElement('textarea');
+        tempInput.value = accountNumber.textContent;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+
+        copyText.textContent = 'Tersalin!';
+        setTimeout(() => {
+            copyText.textContent = 'Salin';
+        }, 2000);
+    });
 
     // Event listener for payment confirmation
     paymentConfirmBtn.addEventListener('click', () => {
@@ -344,6 +385,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         createReceiptItem('Jenjang Pendidikan', data.jenjang);
         createReceiptItem('Nama Lengkap', data.nama_lengkap);
+        createReceiptItem('Nomor WhatsApp Utama', data.kontak_utama_wa);
         createReceiptItem('Jenis Kelamin', data.jenis_kelamin);
         createReceiptItem('NISN', data.nisn);
         createReceiptItem('NIK', data.nik);
@@ -355,6 +397,7 @@ document.addEventListener('DOMContentLoaded', () => {
         createReceiptItem('Email Ayah', data.ayah_email);
         createReceiptItem('Nomor WhatsApp Ayah', data.ayah_wa);
         createReceiptItem('Nama Ibu', data.ibu_nama);
+        createReceiptItem('Nomor WhatsApp Ibu', data.ibu_wa);
         createReceiptItem('Nama Wali', data.wali_nama);
         createReceiptItem('Email Wali', data.wali_email);
         if (proofFile) {
